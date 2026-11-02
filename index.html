@@ -3,83 +3,290 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil-Einschätzung</title>
+  <title>Profil-Einschätzung | Transparenz Jugendhilfe</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f6f8; margin: 0; padding: 20px; color: #333; }
-    .card { max-width: 500px; margin: 0 auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-    h1 { font-size: 1.4rem; margin-top: 0; }
-    .question { margin-bottom: 20px; }
-    .question label { display: block; margin-bottom: 8px; font-weight: 600; }
-    select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 1rem; }
-    button { width: 100%; padding: 12px; background: #0066cc; color: #fff; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; font-weight: bold; margin-top: 10px; }
-    button:hover { background: #0052a3; }
-    .result { display: none; margin-top: 20px; padding: 16px; border-radius: 6px; }
-    .success { background: #e8f5e9; border: 1px solid #c8e6c9; color: #2e7d32; }
-    .rejection { background: #ffebee; border: 1px solid #ffcdd2; color: #c62828; }
-    .btn-link { display: inline-block; margin-top: 12px; padding: 10px 16px; background: #2e7d32; color: #fff; text-decoration: none; border-radius: 4px; font-weight: bold; }
+    :root {
+      --primary: #2d8a7c;
+      --primary-hover: #246f63;
+      --bg: #f5f7fa;
+      --card-bg: #ffffff;
+      --text: #2c3e50;
+      --text-muted: #667085;
+      --border: #d0d5dd;
+      --success-bg: #ecfdf3;
+      --success-border: #a6f4c5;
+      --success-text: #027a48;
+      --neutral-bg: #f8f9fa;
+      --neutral-border: #eaecf0;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 24px 16px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 32px 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .header h1 {
+      font-size: 1.6rem;
+      margin: 12px 0 6px 0;
+      color: var(--text);
+    }
+
+    .header p {
+      color: var(--text-muted);
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    .question-group {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--neutral-border);
+    }
+
+    .question-group:last-of-type {
+      border-bottom: none;
+    }
+
+    .question-title {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: all 0.15s ease;
+    }
+
+    .option-label:hover {
+      background-color: #f9fafb;
+      border-color: #98a2b3;
+    }
+
+    .option-label input[type="radio"] {
+      margin-right: 12px;
+      accent-color: var(--primary);
+      width: 17px;
+      height: 17px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      margin-top: 10px;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .result-view {
+      display: none;
+      text-align: center;
+      padding: 20px 8px;
+    }
+
+    .result-card {
+      padding: 24px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .result-success {
+      background-color: var(--success-bg);
+      border: 1px solid var(--success-border);
+    }
+
+    .result-success h2 {
+      color: var(--success-text);
+      margin-top: 0;
+      font-size: 1.35rem;
+    }
+
+    .result-rejection {
+      background-color: var(--neutral-bg);
+      border: 1px solid var(--neutral-border);
+    }
+
+    .result-rejection h2 {
+      margin-top: 0;
+      font-size: 1.35rem;
+      color: var(--text);
+    }
+
+    .btn-jobs {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 12px 24px;
+      background-color: var(--primary);
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background 0.15s ease;
+    }
+
+    .btn-jobs:hover {
+      background-color: var(--primary-hover);
+    }
   </style>
 </head>
 <body>
 
-<div class="card" id="quiz-card">
-  <h1>Profil-Einschätzung</h1>
-  <p>Beantworte die Aussagen, um deine Einstufung zu sehen.</p>
-
-  <form id="quiz-form">
-    <div class="question">
-      <label>Frage 1: Ich bringe Erfahrung in der Softwareentwicklung mit.</label>
-      <select id="q1" required>
-        <option value="" disabled selected>Bitte wählen...</option>
-        <option value="5">Trifft voll zu (5 Punkte)</option>
-        <option value="4">Trifft eher zu (4 Punkte)</option>
-        <option value="3">Teilweise (3 Punkte)</option>
-        <option value="2">Trifft eher nicht zu (2 Punkte)</option>
-        <option value="1">Trifft überhaupt nicht zu (1 Punkt)</option>
-      </select>
-    </div>
-
-    <div class="question">
-      <label>Frage 2: Ich arbeite mich gerne in komplexe Systeme ein.</label>
-      <select id="q2" required>
-        <option value="" disabled selected>Bitte wählen...</option>
-        <option value="5">Trifft voll zu (5 Punkte)</option>
-        <option value="4">Trifft eher zu (4 Punkte)</option>
-        <option value="3">Teilweise (3 Punkte)</option>
-        <option value="2">Trifft eher nicht zu (2 Punkte)</option>
-        <option value="1">Trifft überhaupt nicht zu (1 Punkt)</option>
-      </select>
-    </div>
-
-    <button type="submit">Auswertung anzeigen</button>
-  </form>
-
-  <div id="result-success" class="result success">
-    <h3>Ihre Passung ist vielversprechend</h3>
-    <p>Mit deinem Score erfüllst du wichtige Kriterien für offene Positionen bei uns.</p>
-    <a href="https://example.com/stellenangebote" class="btn-link" target="_blank">Zu den Stellenangeboten</a>
+<div class="container">
+  <div class="header">
+    <h1>Profil-Einschätzung</h1>
+    <p>Beantworte fünf Aussagen, um deine Einschätzung zu erhalten.</p>
   </div>
 
-  <div id="result-rejection" class="result rejection">
-    <h3>Vielen Dank für dein Interesse</h3>
-    <p>Aktuell suchen wir Profile mit anderen Schwerpunkten. Bleib gern in Kontakt.</p>
+  <form id="evaluation-form">
+    <!-- Frage 1 -->
+    <div class="question-group">
+      <span class="question-title">Frage 1: Ich habe Freude an der pädagogischen Arbeit und Beziehungsgestaltung.</span>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q1" value="5" required> Stimme voll zu (5 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q1" value="4"> Stimme teilweise zu (4 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q1" value="3"> Ich habe keine Meinung dazu (3 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q1" value="2"> Stimme eher nicht zu (2 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q1" value="1"> Stimme überhaupt nicht zu (1 Punkt)</label>
+      </div>
+    </div>
+
+    <!-- Frage 2 -->
+    <div class="question-group">
+      <span class="question-title">Frage 2: Ich arbeite gerne eigenverantwortlich und reflektiert im Team.</span>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q2" value="5" required> Stimme voll zu (5 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q2" value="4"> Stimme teilweise zu (4 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q2" value="3"> Ich habe keine Meinung dazu (3 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q2" value="2"> Stimme eher nicht zu (2 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q2" value="1"> Stimme überhaupt nicht zu (1 Punkt)</label>
+      </div>
+    </div>
+
+    <!-- Frage 3 -->
+    <div class="question-group">
+      <span class="question-title">Frage 3: In herausfordernden Situationen bleibe ich ruhig und lösungsorientiert.</span>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q3" value="5" required> Stimme voll zu (5 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q3" value="4"> Stimme teilweise zu (4 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q3" value="3"> Ich habe keine Meinung dazu (3 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q3" value="2"> Stimme eher nicht zu (2 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q3" value="1"> Stimme überhaupt nicht zu (1 Punkt)</label>
+      </div>
+    </div>
+
+    <!-- Frage 4 -->
+    <div class="question-group">
+      <span class="question-title">Frage 4: Ich bin offen für flexible Arbeitszeiten und Schichtmodelle.</span>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q4" value="5" required> Stimme voll zu (5 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q4" value="4"> Stimme teilweise zu (4 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q4" value="3"> Ich habe keine Meinung dazu (3 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q4" value="2"> Stimme eher nicht zu (2 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q4" value="1"> Stimme überhaupt nicht zu (1 Punkt)</label>
+      </div>
+    </div>
+
+    <!-- Frage 5 -->
+    <div class="question-group">
+      <span class="question-title">Frage 5: Dokumentation und Berichterstellung gehören für mich selbstverständlich dazu.</span>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q5" value="5" required> Stimme voll zu (5 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q5" value="4"> Stimme teilweise zu (4 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q5" value="3"> Ich habe keine Meinung dazu (3 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q5" value="2"> Stimme eher nicht zu (2 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q5" value="1"> Stimme überhaupt nicht zu (1 Punkt)</label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-submit">Auswertung anzeigen</button>
+  </form>
+
+  <!-- Erfolgs-Ansicht (>= 15 Punkte) -->
+  <div id="view-success" class="result-view">
+    <div class="result-card result-success">
+      <h2>Ihre Passung ist vielversprechend</h2>
+      <p>Mit deinem Gesamtergebnis erfüllst du zentrale Anforderungen für Tätigkeiten in unserem Team. Entdecke jetzt unsere aktuellen Angebote und finde die passende Stelle.</p>
+      <a href="https://transparenz-jugendhilfe.de/jobs/" class="btn-jobs">Zu den Stellenangeboten</a>
+    </div>
+  </div>
+
+  <!-- Absage-Ansicht (< 15 Punkte) -->
+  <div id="view-rejection" class="result-view">
+    <div class="result-card result-rejection">
+      <h2>Vielen Dank für dein Interesse</h2>
+      <p>Aktuell suchen wir Profile mit anderen Schwerpunkten. Behalte unsere Entwicklung gern im Auge und bleib mit uns in Kontakt.</p>
+    </div>
   </div>
 </div>
 
 <script>
-  document.getElementById('quiz-form').addEventListener('submit', function(e) {
+  document.getElementById('evaluation-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    
-    const q1 = parseInt(document.getElementById('q1').value, 10);
-    const q2 = parseInt(document.getElementById('q2').value, 10);
-    const totalScore = q1 + q2;
 
-    document.getElementById('quiz-form').style.display = 'none';
+    const form = e.target;
+    const scores = [
+      parseInt(form.q1.value, 10),
+      parseInt(form.q2.value, 10),
+      parseInt(form.q3.value, 10),
+      parseInt(form.q4.value, 10),
+      parseInt(form.q5.value, 10)
+    ];
 
-    if (totalScore >= 5) {
-      document.getElementById('result-success').style.display = 'block';
+    const total = scores.reduce((sum, current) => sum + current, 0);
+
+    form.style.display = 'none';
+
+    if (total >= 15) {
+      document.getElementById('view-success').style.display = 'block';
     } else {
-      document.getElementById('result-rejection').style.display = 'block';
+      document.getElementById('view-rejection').style.display = 'block';
     }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 </script>
 
