@@ -44,6 +44,13 @@
       margin-bottom: 28px;
     }
 
+    .header-logo {
+      max-width: 180px;
+      height: auto;
+      margin: 0 auto 16px auto;
+      display: block;
+    }
+
     .header h1 {
       font-size: 1.6rem;
       margin: 12px 0 6px 0;
@@ -177,6 +184,11 @@
 
 <div class="container">
   <div class="header">
+    <img 
+      src="https://transparenz-jugendhilfe.de/wp-content/uploads/2021/04/cropped-Transparenz-Logo-1.png" 
+      alt="Transparenz Jugendhilfe Logo" 
+      class="header-logo"
+    >
     <h1>Profil-Einschätzung</h1>
     <p>Beantworte fünf Aussagen, um deine Einschätzung zu erhalten.</p>
   </div>
@@ -268,6 +280,7 @@
     e.preventDefault();
 
     const form = e.target;
+    // Numerische Werte der fünf Fragen erfassen
     const scores = [
       parseInt(form.q1.value, 10),
       parseInt(form.q2.value, 10),
@@ -276,16 +289,20 @@
       parseInt(form.q5.value, 10)
     ];
 
+    // Gesamtscore berechnen
     const total = scores.reduce((sum, current) => sum + current, 0);
 
+    // Formular ausblenden
     form.style.display = 'none';
 
+    // Bedingte Weiterleitung/Anzeige anhand der 15-Punkte-Schwelle
     if (total >= 15) {
       document.getElementById('view-success').style.display = 'block';
     } else {
       document.getElementById('view-rejection').style.display = 'block';
     }
 
+    // Nach oben scrollen für Mobilgeräte
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 </script>
