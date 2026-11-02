@@ -231,4 +231,87 @@
 
     <!-- Frage 3 -->
     <div class="question-group">
-      <span class="question
+      <span class="question-title">Frage 3: In herausfordernden Situationen bleibe ich ruhig und lösungsorientiert.</span>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q3" value="5" required> Stimme voll zu (5 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q3" value="4"> Stimme teilweise zu (4 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q3" value="3"> Ich habe keine Meinung dazu (3 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q3" value="2"> Stimme eher nicht zu (2 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q3" value="1"> Stimme überhaupt nicht zu (1 Punkt)</label>
+      </div>
+    </div>
+
+    <!-- Frage 4 -->
+    <div class="question-group">
+      <span class="question-title">Frage 4: Ich bin offen für flexible Arbeitszeiten und Schichtmodelle.</span>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q4" value="5" required> Stimme voll zu (5 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q4" value="4"> Stimme teilweise zu (4 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q4" value="3"> Ich habe keine Meinung dazu (3 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q4" value="2"> Stimme eher nicht zu (2 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q4" value="1"> Stimme überhaupt nicht zu (1 Punkt)</label>
+      </div>
+    </div>
+
+    <!-- Frage 5 -->
+    <div class="question-group">
+      <span class="question-title">Frage 5: Dokumentation und Berichterstellung gehören für mich selbstverständlich dazu.</span>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q5" value="5" required> Stimme voll zu (5 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q5" value="4"> Stimme teilweise zu (4 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q5" value="3"> Ich habe keine Meinung dazu (3 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q5" value="2"> Stimme eher nicht zu (2 Punkte)</label>
+        <label class="option-label"><input type="radio" name="q5" value="1"> Stimme überhaupt nicht zu (1 Punkt)</label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-submit">Auswertung anzeigen</button>
+  </form>
+
+  <!-- Erfolgs-Ansicht (>= 15 Punkte) -->
+  <div id="view-success" class="result-view">
+    <div class="result-card result-success">
+      <h2>Ihre Passung ist vielversprechend</h2>
+      <p>Mit deinem Gesamtergebnis erfüllst du zentrale Anforderungen für Tätigkeiten in unserem Team. Entdecke jetzt unsere aktuellen Angebote und finde die passende Stelle.</p>
+      <a href="https://transparenz-jugendhilfe.de/jobs/" class="btn-jobs">Zu den Stellenangeboten</a>
+    </div>
+  </div>
+
+  <!-- Absage-Ansicht (< 15 Punkte) -->
+  <div id="view-rejection" class="result-view">
+    <div class="result-card result-rejection">
+      <h2>Vielen Dank für dein Interesse</h2>
+      <p>Aktuell suchen wir Profile mit anderen Schwerpunkten. Behalte unsere Entwicklung gern im Auge und bleib mit uns in Kontakt.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('evaluation-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const scores = [
+      parseInt(form.q1.value, 10),
+      parseInt(form.q2.value, 10),
+      parseInt(form.q3.value, 10),
+      parseInt(form.q4.value, 10),
+      parseInt(form.q5.value, 10)
+    ];
+
+    const total = scores.reduce((sum, current) => sum + current, 0);
+
+    form.style.display = 'none';
+
+    if (total >= 15) {
+      document.getElementById('view-success').style.display = 'block';
+    } else {
+      document.getElementById('view-rejection').style.display = 'block';
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>
